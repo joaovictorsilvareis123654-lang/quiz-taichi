@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tai Chi na Cadeira — Teste de 1 minuto</title>
+<meta name="description" content="Descubra sua rotina de Tai Chi na Cadeira para 40+: 10 a 15 minutos por dia, sem impacto, só com uma cadeira.">
+<style>
+:root{
+  --bg:#f6f4ef; --card:#ffffff; --ink:#24302b; --muted:#6a756f; --brand:#2f7d63; --brand-2:#e7f2ec;
+  --line:#e2ded5; --accent:#c9733a; --warn:#fff6e6; --radius:16px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:19px;line-height:1.45}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px 40px}
+header.top{display:flex;align-items:center;gap:10px;margin-bottom:10px;min-height:40px}
+.back{border:0;background:var(--brand-2);color:var(--brand);width:40px;height:40px;border-radius:10px;font-size:22px;cursor:pointer}
+.back[hidden]{visibility:hidden;display:block}
+.bar{flex:1;height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;width:0;background:var(--brand);transition:width .3s}
+.section{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:center;margin:2px 0 6px}
+h1{font-size:28px;line-height:1.2;margin:8px 0 10px}
+h2{font-size:24px;line-height:1.25;margin:8px 0 8px}
+p.sub{color:var(--muted);margin:0 0 16px}
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.opt{display:flex;align-items:center;gap:14px;width:100%;min-height:64px;padding:12px 16px;background:var(--card);border:2px solid var(--line);border-radius:var(--radius);font:inherit;color:inherit;text-align:left;cursor:pointer}
+.opt:active,.opt.sel{border-color:var(--brand);background:var(--brand-2)}
+.opt .box{width:26px;height:26px;border:2px solid var(--line);border-radius:7px;margin-left:auto;flex:none;display:grid;place-items:center;font-size:16px;color:#fff}
+.opt.sel .box{background:var(--brand);border-color:var(--brand)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:var(--radius);overflow:hidden;cursor:pointer;padding:0;font:inherit;color:inherit;text-align:left}
+.card:active,.card.sel{border-color:var(--brand)}
+.card .ph{aspect-ratio:4/5}
+.card .lbl{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;font-weight:600;background:var(--brand);color:#fff}
+.ph{position:relative;background:linear-gradient(135deg,#dfece5,#f1e7dc);display:grid;place-items:center;color:var(--muted);font-size:13px;text-align:center}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ph span{padding:8px}
+.hero{border-radius:var(--radius);overflow:hidden;aspect-ratio:16/10;margin:6px 0 14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px 0 6px}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-size:15px}
+.btn{display:block;width:100%;min-height:62px;border:0;border-radius:var(--radius);background:var(--brand);color:#fff;font:inherit;font-weight:700;font-size:20px;cursor:pointer;margin-top:18px;text-decoration:none;text-align:center;line-height:62px}
+.btn:disabled{background:#b9c7c0;cursor:not-allowed}
+.btn.orange{background:var(--accent)}
+.info{background:var(--card);border-radius:var(--radius);padding:18px;border:1px solid var(--line)}
+.info ul{padding-left:20px;margin:8px 0}
+.info li{margin:6px 0}
+input[type=text],input[type=email]{width:100%;font:inherit;font-size:20px;padding:16px;border:2px solid var(--line);border-radius:var(--radius);background:#fff;margin-top:12px}
+input:focus{outline:none;border-color:var(--brand)}
+label.consent{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--muted);margin-top:14px}
+label.consent input{width:24px;height:24px;flex:none;margin-top:2px}
+.meter{margin:14px 0}
+.meter .row{display:flex;justify-content:space-between;font-weight:600;font-size:17px}
+.meter .track{height:12px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:6px}
+.meter .track i{display:block;height:100%;border-radius:99px}
+.small{font-size:14px;color:var(--muted)}
+.load-steps{list-style:none;padding:0;margin:18px 0}
+.load-steps li{padding:10px 0;color:var(--muted)}
+.load-steps li.done{color:var(--ink)}
+.load-steps li.done::before{content:"✓ ";color:var(--brand);font-weight:700}
+.big{font-size:44px;font-weight:800;text-align:center;color:var(--brand);margin:10px 0}
+footer.disc{max-width:560px;margin:0 auto;padding:0 16px 30px;font-size:13px;color:var(--muted);text-align:center}
+/* resultado / vendas */
+.res-top{background:var(--brand);color:#fff;border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.res-top h1{margin:4px 0}
+.pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:99px;padding:4px 12px;font-size:15px;margin:4px 6px 0 0}
+.block{background:var(--card);border-radius:var(--radius);padding:18px;margin:14px 0;border:1px solid var(--line)}
+.block h2{margin-top:0}
+.video{aspect-ratio:16/9;border-radius:var(--radius);overflow:hidden}
+.price{text-align:center}
+.price .old{text-decoration:line-through;color:var(--muted)}
+.price .now{font-size:46px;font-weight:800;color:var(--brand)}
+.check li{list-style:none;margin:8px 0}
+.check{padding-left:0}
+.check li::before{content:"✓ ";color:var(--brand);font-weight:800}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:8px 0}
+summary{font-weight:600;cursor:pointer}
+.warn{background:var(--warn);border-radius:12px;padding:12px 14px;font-size:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <button class="back" id="back" aria-label="Voltar" hidden>←</button>
+    <div class="bar" id="barWrap"><i id="bar"></i></div>
+  </header>
+  <main id="app"></main>
+</div>
+<footer class="disc">Material educativo. Não substitui orientação médica. Em caso de dor forte, tontura ou condição de saúde, consulte um profissional antes de começar.<br><a href="#" style="color:inherit">Termos</a> · <a href="#" style="color:inherit">Privacidade</a> · <a href="#" style="color:inherit">Contato</a></footer>
+
+<script>
+/* ================== CONFIGURAÇÃO (troque aqui) ================== */
+const CONFIG = {
+  produto: "Tai Chi na Cadeira",
+  metodo: "Método dos 4 Movimentos",       // Respirar, Soltar, Firmar, Equilibrar
+  preco: "27,00",
+  precoAntigo: "",                           // deixe vazio se não houver preço anterior real
+  checkoutUrl: "#",                          // link do checkout (Kiwify, Hotmart, Eduzz...)
+  emailEndpoint: "",                         // URL que recebe {nome,email,consent} (ex.: webhook da sua ferramenta de e-mail)
+  videoUrl: "",                              // link de embed da mini-VSL (YouTube/Vimeo/Panda). Vazio = mostra imagem
+  garantiaDias: 7
+};
+/* Pixel: chame só eventos genéricos. NUNCA envie respostas de saúde. */
+function track(evento){ try{ if(window.fbq) fbq('trackCustom', evento); }catch(e){} }
+
+/* ================== AJUDANTES ================== */
+const A = {};                     // respostas
+const $app = document.getElementById('app');
+const G = (f,m)=> A.genero==='homem' ? m : f;           // texto por gênero
+const faixa = ()=> ({'40':'40 a 49','50':'50 a 59','60':'60 a 69','70':'70 ou mais'})[A.idade]||'';
+function img(src,label,cls='ph'){
+  return `<div class="${cls}"><span>${label}</span><img src="${src}" alt="" onerror="this.remove()"></div>`;
+}
+const has = (k,v)=> Array.isArray(A[k]) ? A[k].includes(v) : A[k]===v;
+
+/* ================== TELAS ================== */
+const S = [
+ {id:'genero', type:'capa'},
+ {id:'idade', type:'cards', sec:'Meu perfil', q:()=>'Qual é a sua idade?',
+  opts:[['40','40 a 49'],['50','50 a 59'],['60','60 a 69'],['70','70 ou mais']],
+  img:v=>`img/idade-${A.genero}-${v}.webp`},
+ {id:'promessa', type:'info', title:()=>`Feito para ${G('mulheres','homens')} de ${faixa()}`,
+  html:()=>`${img(`img/promessa-${A.genero}.webp`,'Foto: pessoa da faixa de idade fazendo o movimento na cadeira','ph hero')}
+  <div class="info">Movimentos controlados, sentado ou usando a cadeira como apoio, sem impacto nas articulações.
+  <ul><li>Só uma cadeira comum</li><li>10 a 15 minutos por dia</li><li>No seu ritmo, em casa</li></ul></div>`},
+ {id:'experiencia', type:'single', sec:'Meu perfil', q:()=>'Você já praticou Tai Chi ou ginástica na cadeira?',
+  opts:[['nunca','Nunca'],['parei','Já tentei e parei'],['vez','Pratico de vez em quando']]},
+
+ {id:'objetivo', type:'single', sec:'Objetivo', q:()=>'Qual é o seu principal objetivo?',
+  opts:[['firme','Corpo mais firme e definido'],['forca','Ganhar força'],['mobilidade','Menos rigidez, mais mobilidade'],
+        ['equilibrio','Equilíbrio e segurança ao andar'],['calma','Mais calma e sono tranquilo'],['independencia','Manter minha independência']]},
+ {id:'musculacao', type:'single', sec:'Objetivo', show:()=>has('objetivo','firme')||has('objetivo','forca'),
+  q:()=>'Já fez musculação ou treino de força?', opts:[['nunca','Nunca'],['parei','Já fiz e parei'],['faco','Faço hoje']]},
+ {id:'estresse', type:'single', sec:'Objetivo', show:()=>has('objetivo','calma'),
+  q:()=>'Como está o seu nível de estresse no dia a dia?', opts:[['alto','Alto'],['medio','Médio'],['baixo','Baixo']]},
+ {id:'outros', type:'multi', sec:'Objetivo', q:()=>'O que mais você gostaria de ganhar?', sub:'Escolha todas que se aplicam',
+  opts:[['disposicao','Disposição'],['postura','Postura'],['flex','Flexibilidade'],['respiracao','Respiração mais calma'],['autoestima','Autoestima'],['alimentacao','Cuidar melhor da alimentação']]},
+ {id:'solucao', type:'info', title:()=>'Ótima escolha!',
+  html:()=>`${img(`img/solucao-${A.genero}.webp`,'Ilustração: respiração + movimento lento na cadeira','ph hero')}
+  <div class="info">O Tai Chi na cadeira junta <b>movimento controlado e respiração</b>. Você trabalha o corpo todo, sem pressa e sem impacto, e evolui quando ficar fácil.</div>`},
+
+ {id:'corpo', type:'single', sec:'Seu corpo', q:()=>'Como você sente o seu corpo hoje?',
+  opts:[['travado','Travado e pesado'],['semforca','Sem força nas pernas'],['cansa','Cansa rápido'],['bem','Bem, mas quero manter assim']]},
+ {id:'sentir', type:'single', sec:'Seu corpo', q:()=>'Como você quer se sentir daqui a algumas semanas?',
+  opts:[['agil',()=>G('Firme e ágil','Firme e ágil')],['leve',()=>G('Leve e solta','Leve e solto')],['seguro',()=>G('Segura ao andar','Seguro ao andar')],['calmo',()=>G('Calma e descansada','Calmo e descansado')]]},
+ {id:'areas', type:'multi', sec:'Seu corpo', q:()=>'Quais partes do corpo você quer trabalhar?', sub:'Escolha todas que se aplicam',
+  pre:()=>img(`img/silhueta-${A.genero}.webp`,'Silhueta com as áreas do corpo','ph hero'),
+  opts:[['pernas','Pernas'],['bracos','Braços'],['costas','Costas'],['tronco','Tronco e abdômen'],['ombros','Ombros e pescoço'],['todo','Corpo todo']]},
+
+ {id:'flex', type:'single', sec:'Condição física', q:()=>'Sentado, você consegue alcançar os pés com as mãos?',
+  opts:[['facil','Com facilidade'],['esforco','Com esforço'],['nao','Não consigo']]},
+ {id:'freq', type:'single', sec:'Condição física', q:()=>'Com que frequência você se exercita hoje?',
+  opts:[['nunca','Quase nunca'],['1-2','1 a 2 vezes por semana'],['3+','3 vezes ou mais']]},
+ {id:'levantar', type:'single', sec:'Condição física', q:()=>'Você consegue se levantar da cadeira sem usar as mãos?',
+  opts:[['nao','Não consigo'],['esforco','Consigo com esforço'],['facil','Consigo fácil']]},
+ {id:'seguro', type:'info', show:()=>A.idade==='70'||A.levantar==='nao', title:()=>'Vamos começar sentado, com segurança',
+  html:()=>`<div class="info">Seu plano começa com movimentos sentados. Quando ficar fácil, você avança para os movimentos com a cadeira de apoio.</div>`},
+ {id:'folego', type:'single', sec:'Condição física', show:()=>!(A.idade==='70'||A.levantar==='nao'),
+  q:()=>'Como você fica depois de subir um lance de escada?', opts:[['sem','Sem fôlego'],['pouco',()=>G('Um pouco cansada','Um pouco cansado')],['tranquilo','Tranquilo']]},
+ {id:'equilibrio', type:'single', sec:'Condição física', q:()=>'Como você se sente ao andar na rua ou descer degraus?',
+  opts:[['receio','Tenho receio de tropeçar'],['as-vezes',()=>G('Às vezes fico insegura','Às vezes fico inseguro')],['firme','Me sinto firme']]},
+
+ {id:'desconforto', type:'multi', sec:'Seu corpo', q:()=>'Alguma região costuma incomodar?', sub:'Escolha todas que se aplicam', none:'nenhuma',
+  opts:[['costas','Costas e lombar'],['joelhos','Joelhos'],['ombros','Ombros e pescoço'],['quadril','Quadril'],['maos','Mãos e punhos'],['nenhuma','Nenhuma']]},
+ {id:'validacao', type:'info', show:()=>!has('desconforto','nenhuma'), title:()=>'Pode deixar!',
+  html:()=>`${img(`img/validacao-${A.genero}.webp`,'Ilustração: pessoa sorrindo, movimento suave','ph hero')}
+  <div class="info">Sua rotina vai respeitar isso, com movimentos suaves e no seu ritmo.</div>
+  <p class="warn" style="margin-top:12px">Se a dor for forte, fale com seu médico antes de começar.</p>`},
+ {id:'semdor', type:'info', show:()=>has('desconforto','nenhuma'), title:()=>'Ótimo!',
+  html:()=>`<div class="info">Seu plano pode ir direto para movimentos de firmeza e força.</div>`},
+
+ {id:'dia', type:'single', sec:'Rotina', q:()=>'Como é o seu dia normal?',
+  opts:[['sentado',()=>G('Passo a maior parte sentada','Passo a maior parte sentado')],['vez','Me movimento de vez em quando'],['pe','Passo o dia em pé']]},
+ {id:'horario', type:'single', sec:'Rotina', q:()=>'Quando prefere praticar?', opts:[['manha','De manhã'],['tarde','À tarde'],['noite','À noite, antes de deitar']]},
+ {id:'tempo', type:'single', sec:'Rotina', q:()=>'Quanto tempo por dia você tem?', opts:[['5-10','5 a 10 minutos'],['10-15','10 a 15 minutos'],['20+','20 minutos ou mais']]},
+ {id:'energia', type:'single', sec:'Rotina', q:()=>'Como está sua energia durante o dia?',
+  opts:[['cedo',()=>G('Cansada desde cedo','Cansado desde cedo')],['almoco','Caio depois do almoço'],['boa','Boa na maior parte do dia']]},
+ {id:'sono', type:'single', sec:'Rotina', q:()=>'Como você tem dormido?', opts:[['demoro','Demoro a pegar no sono'],['acordo','Acordo várias vezes'],['bem','Durmo bem']]},
+ {id:'alimentacao', type:'single', sec:'Rotina', q:()=>'Como você descreveria sua alimentação?',
+  opts:[['equilibrada','Equilibrada'],['melhorar','Poderia ser melhor'],['fora','Como fora de hora e belisco muito']]},
+ {id:'bonus', type:'info', show:()=>A.alimentacao==='melhorar'||A.alimentacao==='fora', title:()=>'Movimento e alimentação andam juntos',
+  html:()=>`${img('img/bonus-alimentacao.webp','Foto: prato colorido e simples do dia a dia','ph hero')}
+  <div class="info">Seu plano inclui um <b>guia simples de refeições do dia a dia</b>, sem dieta radical.</div>`},
+ {id:'agua', type:'single', sec:'Rotina', q:()=>'Quanta água você bebe por dia?', opts:[['pouca','Quase nada'],['2-4','2 a 4 copos'],['5+','5 copos ou mais']]},
+
+ {id:'motivo', type:'single', sec:'Motivação', q:()=>'O que mais te motiva a começar agora?',
+  opts:[['familia','Ter energia para a família'],['espelho','Gostar do que vejo no espelho'],['independencia','Não depender de ninguém'],['passear','Passear e viajar'],['futuro','Cuidar da saúde para o futuro']]},
+ {id:'mito', type:'info', title:()=>'"Na minha idade já não adianta."',
+  html:()=>`<div class="info">Movimento regular e controlado pode ajudar o corpo em qualquer idade. Você começa pelo que é confortável e aumenta aos poucos.</div>`},
+ {id:'confianca', type:'single', sec:'Motivação', q:()=>'Você acredita que consegue fazer 10 a 15 minutos por dia, só com uma cadeira?',
+  opts:[['sim','Sim, com certeza'],['acho','Acho que sim'],['duvida','Tenho dúvida, mas quero tentar']]},
+
+ {id:'perfil', type:'perfil'},
+ {id:'nome', type:'nome'},
+ {id:'loading', type:'loading'},
+ {id:'email', type:'email'}
+];
+
+/* ================== PONTUAÇÃO ================== */
+function calc(){
+  const p={A:0,B:0,C:0};
+  if(['firme','forca','mobilidade','independencia'].includes(A.objetivo)) p.A+=3;
+  if(A.objetivo==='equilibrio') p.B+=3;
+  if(A.objetivo==='calma') p.C+=3;
+  if(['travado','semforca'].includes(A.corpo)) p.A+=1;
+  if(A.flex!=='facil') p.A+=1;
+  if(A.levantar!=='facil') p.A+=1;
+  if(has('desconforto','costas')||has('desconforto','quadril')) p.A+=1;
+  if(A.folego==='sem') p.B+=1;
+  if(A.equilibrio!=='firme') p.B+=2;
+  if(has('desconforto','joelhos')) p.B+=1;
+  if(has('desconforto','ombros')) p.C+=1;
+  if(A.energia==='cedo') p.C+=1;
+  if(A.sono!=='bem') p.C+=2;
+  let perfil = Object.keys(p).sort((a,b)=>p[b]-p[a])[0];
+  const tie = Object.keys(p).filter(k=>p[k]===p[perfil]);
+  if(tie.length>1){ perfil = A.objetivo==='equilibrio'?'B':A.objetivo==='calma'?'C':'A'; }
+  const nivel = (A.idade==='70'||A.levantar==='nao'||A.equilibrio==='receio') ? 1
+              : (A.levantar==='facil' || (A.levantar==='esforco' && A.freq!=='nunca')) ? 2 : 1;
+  return {perfil,nivel};
+}
+const PERFIS = {
+  A:{nome:'Mobilidade e Firmeza no Dia a Dia', foco:['Levantar da cadeira com firmeza','Pernas e tronco mais fortes','Soltar a rigidez do corpo']},
+  B:{nome:'Equilíbrio e Segurança', foco:['Firmeza para andar e subir degraus','Tronco estável','Pés bem plantados no chão']},
+  C:{nome:'Calma, Descompressão e Sono', foco:['Respiração lenta','Soltar ombros e pescoço','Rotina leve antes de deitar']}
+};
+function niveis(){
+  const s=(v,map)=>map[v]??1;
+  const firm = (s(A.corpo,{travado:0,semforca:0,cansa:1,bem:2}) + s(A.levantar,{nao:0,esforco:1,facil:2}))/4;
+  const mob  = (s(A.flex,{nao:0,esforco:1,facil:2}) + s(A.corpo,{travado:0,semforca:1,cansa:1,bem:2}))/4;
+  const eq   = (s(A.equilibrio,{receio:0,'as-vezes':1,firme:2}) + s(A.folego,{sem:0,pouco:1,tranquilo:2}))/4;
+  const calm = (s(A.energia,{cedo:0,almoco:1,boa:2}) + s(A.sono,{demoro:0,acordo:0,bem:2}))/4;
+  return [['Firmeza das pernas',firm],['Mobilidade',mob],['Equilíbrio',eq],['Calma e sono',calm]];
+}
+
+/* ================== MOTOR ================== */
+let hist=[];             // pilha de índices visitados
+let cur=0;
+const visible = i => !S[i].show || S[i].show();
+function nextIndex(i){ for(let j=i+1;j<S.length;j++) if(visible(j)) return j; return -1; }
+function pathLen(){ return S.filter((s,i)=>visible(i)).length; }
+function stepNum(){ return S.slice(0,cur+1).filter((s,i)=>visible(i)).length; }
+
+function go(i){ if(i<0){ showResult(); return; } hist.push(cur); cur=i; render(); }
+function next(){ go(nextIndex(cur)); }
+document.getElementById('back').onclick=()=>{ if(hist.length){ cur=hist.pop(); render(); } };
+
+function setBar(){
+  const pct = Math.round(stepNum()/pathLen()*100);
+  document.getElementById('bar').style.width=pct+'%';
+  document.getElementById('back').hidden = cur===0;
+}
+const lbl = l => typeof l==='function' ? l() : l;
+
+function render(){
+  window.scrollTo(0,0);
+  const s=S[cur]; setBar();
+  if(s.type==='capa') return renderCapa();
+  if(s.type==='cards') return renderCards(s);
+  if(s.type==='single') return renderSingle(s);
+  if(s.type==='multi') return renderMulti(s);
+  if(s.type==='info') return renderInfo(s);
+  if(s.type==='perfil') return renderPerfil();
+  if(s.type==='nome') return renderNome();
+  if(s.type==='loading') return renderLoading();
+  if(s.type==='email') return renderEmail();
+}
+
+function renderCapa(){
+  $app.innerHTML=`
+   <h1 style="text-align:center">${CONFIG.produto}: plano personalizado para 40+ melhorar o corpo em casa</h1>
+   <p class="sub" style="text-align:center">Teste de 1 minuto</p>
+   <div class="chips"><span class="chip">Só uma cadeira</span><span class="chip">10 a 15 min por dia</span><span class="chip">Sem impacto</span></div>
+   <div class="grid">
+     <button class="card" data-v="mulher">${img('img/capa-mulher.webp','Foto: mulher 45-60 na cadeira')}<div class="lbl">Mulher <span>›</span></div></button>
+     <button class="card" data-v="homem">${img('img/capa-homem.webp','Foto: homem 45-60 na cadeira')}<div class="lbl">Homem <span>›</span></div></button>
+   </div>`;
+  $app.querySelectorAll('.card').forEach(b=>b.onclick=()=>{ A.genero=b.dataset.v; track('QuizIniciado'); next(); });
+}
+function head(s){ return `${s.sec?`<div class="section">${s.sec}</div>`:''}<h2>${s.q()}</h2>${s.sub?`<p class="sub">${s.sub}</p>`:''}${s.pre?s.pre():''}`; }
+function renderCards(s){
+  $app.innerHTML = head(s)+`<div class="grid">${s.opts.map(([v,l])=>`<button class="card" data-v="${v}">${img(s.img(v),'Foto '+l)}<div class="lbl">${l} <span>›</span></div></button>`).join('')}</div>`;
+  $app.querySelectorAll('.card').forEach(b=>b.onclick=()=>{ A[s.id]=b.dataset.v; next(); });
+}
+function renderSingle(s){
+  $app.innerHTML = head(s)+`<div class="opts">${s.opts.map(([v,l])=>`<button class="opt ${A[s.id]===v?'sel':''}" data-v="${v}">${lbl(l)}</button>`).join('')}</div>`;
+  $app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{ A[s.id]=b.dataset.v; b.classList.add('sel'); setTimeout(next,180); });
+}
+function renderMulti(s){
+  const sel=new Set(A[s.id]||[]);
+  $app.innerHTML = head(s)+`<div class="opts">${s.opts.map(([v,l])=>`<button class="opt ${sel.has(v)?'sel':''}" data-v="${v}">${lbl(l)}<span class="box">✓</span></button>`).join('')}</div>
+   <button class="btn" id="go" ${sel.size?'':'disabled'}>Continuar</button>`;
+  const go=$app.querySelector('#go');
+  $app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const v=b.dataset.v;
+    if(s.none && v===s.none){ sel.clear(); sel.add(v); }
+    else { sel.delete(s.none); sel.has(v)?sel.delete(v):sel.add(v); }
+    $app.querySelectorAll('.opt').forEach(o=>o.classList.toggle('sel',sel.has(o.dataset.v)));
+    go.disabled=!sel.size;
+  });
+  go.onclick=()=>{ A[s.id]=[...sel]; next(); };
+}
+function renderInfo(s){
+  $app.innerHTML = `<h2>${s.title()}</h2>${s.html()}<button class="btn" id="go">Continuar</button>`;
+  $app.querySelector('#go').onclick=next;
+}
+function renderPerfil(){
+  const cores=['#d9534f','#e6a23c','#2f7d63'];
+  const txt=v=> v<0.34?'Precisa de atenção':v<0.75?'Em desenvolvimento':'Bom';
+  const cor=v=> v<0.34?cores[0]:v<0.75?cores[1]:cores[2];
+  $app.innerHTML = `<div class="section">Resultado parcial</div><h2>Seu Perfil de Força e Mobilidade</h2>
+   ${niveis().map(([n,v])=>`<div class="meter"><div class="row"><span>${n}</span><span style="color:${cor(v)}">${txt(v)}</span></div>
+     <div class="track"><i style="width:${Math.max(12,Math.round(v*100))}%;background:${cor(v)}"></i></div></div>`).join('')}
+   <p class="small">Estimativa com base nas suas respostas. Não é avaliação médica.</p>
+   <div class="info">A boa notícia: tudo isso pode ser trabalhado com uma rotina curta, feita em casa, no seu ritmo.</div>
+   <button class="btn" id="go">Continuar</button>`;
+  $app.querySelector('#go').onclick=next;
+}
+function renderNome(){
+  $app.innerHTML=`<h2>Como podemos chamar você?</h2><input type="text" id="nm" placeholder="Seu primeiro nome" autocomplete="given-name" value="${A.nome||''}">
+   <button class="btn" id="go" disabled>Continuar</button>`;
+  const i=$app.querySelector('#nm'), g=$app.querySelector('#go');
+  const chk=()=>g.disabled=i.value.trim().length<2; i.oninput=chk; chk();
+  g.onclick=()=>{ A.nome=i.value.trim().split(' ')[0]; next(); };
+}
+function renderLoading(){
+  document.getElementById('back').hidden=true;
+  const steps=['Lendo suas respostas','Escolhendo sua trilha','Preparando seu guia'];
+  $app.innerHTML=`<h2 style="text-align:center">Montando sua rotina, ${A.nome}...</h2><div class="big" id="pc">0%</div>
+   <div class="bar" style="height:12px"><i id="lb" style="display:block;height:100%;width:0;background:var(--brand);border-radius:99px"></i></div>
+   <ul class="load-steps">${steps.map(t=>`<li>${t}</li>`).join('')}</ul>`;
+  let p=0; const lis=$app.querySelectorAll('li');
+  const t=setInterval(()=>{ p+=2; $app.querySelector('#pc').textContent=p+'%'; $app.querySelector('#lb').style.width=p+'%';
+    lis.forEach((li,k)=>{ if(p>=(k+1)*33) li.classList.add('done'); });
+    if(p>=100){ clearInterval(t); setTimeout(next,500); } },140);
+}
+function renderEmail(){
+  $app.innerHTML=`<h2>Seu plano está pronto, ${A.nome}!</h2><p class="sub">Para onde enviamos uma cópia?</p>
+   <input type="email" id="em" placeholder="seu@email.com" autocomplete="email">
+   <label class="consent"><input type="checkbox" id="ck"> Aceito receber meu plano e comunicações por e-mail, de acordo com a Política de Privacidade. Posso cancelar quando quiser.</label>
+   <button class="btn" id="go" disabled>Ver meu plano</button>`;
+  const e=$app.querySelector('#em'), c=$app.querySelector('#ck'), g=$app.querySelector('#go');
+  const ok=()=>g.disabled=!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.value.trim()) && c.checked);
+  e.oninput=ok; c.onchange=ok;
+  g.onclick=async()=>{
+    A.email=e.value.trim(); g.disabled=true; g.textContent='Abrindo...';
+    if(CONFIG.emailEndpoint){
+      try{ await fetch(CONFIG.emailEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({nome:A.nome,email:A.email,consentimento:true,data:new Date().toISOString()})}); }catch(err){}
+    }
+    track('QuizConcluido'); showResult();
+  };
+}
+
+/* ================== RESULTADO + PÁGINA DE VENDAS ================== */
+function showResult(){
+  document.querySelector('header.top').style.display='none';
+  window.scrollTo(0,0);
+  const {perfil,nivel}=calc(), P=PERFIS[perfil];
+  const nivelTxt = nivel===1?'Nível 1 · Sentado':'Nível 2 · Com a cadeira de apoio';
+  let ck = CONFIG.checkoutUrl;
+  if(ck && ck!=='#'){ try{ const u=new URL(ck); u.searchParams.set('name',A.nome||''); u.searchParams.set('email',A.email||''); ck=u.toString(); }catch(e){} }
+  $app.innerHTML=`
+  <div class="res-top">
+    <div class="small" style="color:#d8eee4">Seu resultado</div>
+    <h1>${A.nome}, sua trilha é: ${P.nome}</h1>
+    <span class="pill">Ponto de partida: ${nivelTxt}</span><span class="pill">${({'5-10':'5 a 10','10-15':'10 a 15','20+':'15 a 20'})[A.tempo]||'10 a 15'} min por dia</span>
+  </div>
+  <div class="block"><h2>O que seu guia prioriza</h2><ul class="check">${P.foco.map(f=>`<li>${f}</li>`).join('')}</ul></div>
+
+  <div class="block">
+    <h2>${A.nome}, sua rotina de ${CONFIG.produto} está pronta</h2>
+    ${CONFIG.videoUrl?`<div class="video"><iframe src="${CONFIG.videoUrl}" style="width:100%;height:100%;border:0" allow="autoplay; fullscreen" allowfullscreen></iframe></div>`
+      :img('img/vsl-capa.webp','Capa da mini-VSL / mockup do guia','ph hero')}
+  </div>
+
+  <div class="block"><h2>Muita gente sente isso</h2>
+    <p>O corpo que demora a firmar de manhã. A vontade de se mexer sem se machucar. O cansaço de começar e parar de novo.</p>
+    <p>Academia e vídeos rápidos costumam pedir demais. Aqui o movimento é <b>controlado, curto e com o apoio de uma cadeira</b>.</p></div>
+
+  <div class="block"><h2>O ${CONFIG.metodo}</h2>
+    <ul class="check"><li><b>Respirar:</b> desacelerar e preparar o corpo</li><li><b>Soltar:</b> mobilidade de ombros, coluna e quadril</li>
+    <li><b>Firmar:</b> pernas, braços e tronco mais fortes</li><li><b>Equilibrar:</b> estabilidade e controle do corpo</li></ul>
+    <p class="small">Você começa no seu nível e avança quando ficar fácil.</p></div>
+
+  <div class="block"><h2>O que você recebe</h2>
+    <ul class="check"><li>Rotina de 20 dias, com sessões de 8 a 12 minutos</li><li>Ilustrações passo a passo, em letra grande, para imprimir em A4 ou ver no celular</li>
+    <li>3 trilhas: Mobilidade, Equilíbrio e Calma e Sono (a sua já marcada)</li><li>Nível 1 (sentado) e Nível 2 (com a cadeira de apoio)</li>
+    <li>Página para marcar os dias concluídos</li><li><b>Bônus:</b> guia simples de alimentação equilibrada do dia a dia</li></ul></div>
+
+  <div class="block price">
+    ${CONFIG.precoAntigo?`<div class="old">De R$ ${CONFIG.precoAntigo}</div>`:''}
+    <div>Pagamento único</div><div class="now">R$ ${CONFIG.preco}</div>
+    <div class="small">Pix ou cartão · sem mensalidade · sem aplicativo</div>
+    <a class="btn orange" href="${ck}" id="buy">Quero meu guia agora</a>
+    <p class="small" style="margin-top:12px">Garantia de ${CONFIG.garantiaDias} dias: se não gostar, devolvemos seu dinheiro.</p>
+  </div>
+
+  <div class="block"><h2>Como você recebe</h2><p>Logo após o pagamento, o link do guia chega no seu e-mail e aparece na tela. Você pode imprimir ou ler no celular.</p></div>
+
+  <div class="block"><h2>Perguntas frequentes</h2>
+    <details><summary>Preciso ficar em pé?</summary><p>Não. O Nível 1 é todo sentado. O Nível 2 usa a cadeira como apoio, para quem já se sente firme.</p></details>
+    <details><summary>É cobrança mensal?</summary><p>Não. É um pagamento único, sem renovação automática.</p></details>
+    <details><summary>Preciso de impressora?</summary><p>Não. Dá para acompanhar pelo celular. Se preferir, imprima em casa ou numa papelaria.</p></details>
+    <details><summary>Posso fazer se sinto dor?</summary><p>Converse com seu médico antes de começar e pare qualquer movimento que cause dor.</p></details>
+    <details><summary>E se eu não gostar?</summary><p>Você tem ${CONFIG.garantiaDias} dias de garantia para pedir o reembolso.</p></details>
+  </div>
+  <a class="btn orange" href="${ck}">Quero meu guia agora</a>
+  ${has('desconforto','nenhuma')?'':'<p class="warn" style="margin-top:14px">Se você sente dor forte ou tem alguma condição de saúde, mostre o guia ao seu médico antes de começar.</p>'}`;
+  $app.querySelectorAll('a.btn').forEach(a=>a.onclick=()=>track('CliqueComprar'));
+}
+
+render();
+</script>
+</body>
+</html>
