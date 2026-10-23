@@ -122,12 +122,13 @@ summary{font-weight:600;cursor:pointer}
 const CONFIG = {
   produto: "Tai Chi na Cadeira",
   metodo: "Método dos 4 Movimentos",           // Respirar, Soltar, Firmar, Equilibrar
-  /* PREÇO E CUPOM — o preço normal PRECISA ser o preço real cobrado sem o cupom
-     (ex.: o mesmo produto vendido a R$ 47 no checkout direto). Desconto "de/por" falso é proibido pelo CDC. */
-  precoNormal: "47,00",
-  precoCupom: "27,00",
-  cupom: "CADEIRA42",
-  descontoPct: 42,
+  /* PREÇO — o preço "de" (precoNormal) PRECISA ser um preço real de venda do produto
+     (ex.: checkout direto/página sem quiz vendendo a R$ 149). Preço "de" que nunca foi cobrado é propaganda enganosa (CDC). */
+  precoNormal: "149,00",                        // VALOR TOTAL do pacote (soma dos itens abaixo)
+  valores: { guia:"97,00", bonus1:"27,00", bonus2:"13,00", bonus3:"12,00" },
+  precoCupom: "37,00",
+  cupom: "",                                     // sem código: o desconto é aplicado direto
+  descontoPct: 75,
   checkoutUrl: "#",                              // link do checkout JÁ COM o cupom/preço promocional
   emailEndpoint: "",                             // URL que recebe {nome,email,consentimento}
   videoUrl: "",                                  // embed da mini-VSL. Vazio = mostra imagem
@@ -450,7 +451,7 @@ function renderRaspadinha(){
    <p class="sub center">Um presente para quem completou o teste.</p>
    <div class="scratch" id="sc">
      <div class="prize"><div class="pct">${CONFIG.descontoPct}%</div><div style="font-weight:700;font-size:22px">de desconto</div>
-       <div>no seu plano ${CONFIG.produto}</div><div class="code">Cupom <b>${CONFIG.cupom}</b> ✓</div></div>
+       <div>no seu plano ${CONFIG.produto}</div><div class="code">Valor de R$ ${CONFIG.precoNormal}, hoje por <b>R$ ${CONFIG.precoCupom}</b></div></div>
      <canvas id="cv"></canvas>
    </div>
    <p class="small center" id="hint">Passe o dedo (ou o mouse) sobre o cartão</p>
@@ -469,7 +470,7 @@ function renderRaspadinha(){
     ctx.beginPath(); if(last){ ctx.moveTo(last.x,last.y); ctx.lineTo(x,y); ctx.stroke(); } else { ctx.arc(x,y,24,0,Math.PI*2); ctx.fill(); }
     last={x,y}; if(++moves%15===0) check(); };
   const check=()=>{ const d=ctx.getImageData(0,0,cv.width,cv.height).data; let c=0; for(let i=3;i<d.length;i+=32) if(d[i]===0) c++; if(c/(d.length/32)>0.45) reveal(); };
-  const reveal=()=>{ if(done) return; done=true; cv.style.transition='opacity .4s'; cv.style.opacity=0; setTimeout(()=>cv.remove(),400); go.disabled=false; $app.querySelector('#hint').textContent='Cupom aplicado automaticamente ✓'; track('CupomRevelado'); };
+  const reveal=()=>{ if(done) return; done=true; cv.style.transition='opacity .4s'; cv.style.opacity=0; setTimeout(()=>cv.remove(),400); go.disabled=false; $app.querySelector('#hint').textContent='Desconto aplicado automaticamente ✓'; track('CupomRevelado'); };
   cv.addEventListener('pointerdown',e=>{down=true;last=null;scratch(e);});
   cv.addEventListener('pointermove',e=>{ if(down) scratch(e); });
   window.addEventListener('pointerup',()=>{ if(down){ down=false; last=null; check(); } });
@@ -493,14 +494,21 @@ function showResult(){
   const priceBlock = (id)=>`
   <div class="block price" id="${id}">
     <h2>Comece seu plano hoje</h2>
-    <div class="coupon">Cupom ${CONFIG.cupom} aplicado · -${CONFIG.descontoPct}%</div>
-    <div class="old">De R$ ${CONFIG.precoNormal}</div>
+    <div class="coupon">Seu desconto de ${CONFIG.descontoPct}% foi aplicado ✓</div>
+    <table class="vs" style="margin:12px 0 4px;text-align:left">
+      <tr><td>Guia ${CONFIG.produto} (20 dias, 3 trilhas)</td><td style="text-align:right;white-space:nowrap">R$ ${CONFIG.valores.guia}</td></tr>
+      <tr><td>Bônus 1: Guia de Alimentação Equilibrada</td><td style="text-align:right;white-space:nowrap">R$ ${CONFIG.valores.bonus1}</td></tr>
+      <tr><td>Bônus 2: Cartão da Rotina para a Geladeira</td><td style="text-align:right;white-space:nowrap">R$ ${CONFIG.valores.bonus2}</td></tr>
+      <tr><td>Bônus 3: Diário dos 20 Dias</td><td style="text-align:right;white-space:nowrap">R$ ${CONFIG.valores.bonus3}</td></tr>
+      <tr><td>Valor total</td><td style="text-align:right;white-space:nowrap"><s>R$ ${CONFIG.precoNormal}</s></td></tr>
+    </table>
+    <div style="margin-top:8px">Hoje, para quem fez o teste:</div>
     <div class="now">R$ ${CONFIG.precoCupom}</div>
     <div><b>Pagamento único</b> · acesso para sempre</div>
     <div class="small">Sem mensalidade · sem renovação automática · sem aplicativo</div>
     <a class="btn orange" href="${ck}">Quero meu plano agora</a>
     <div class="pay">🔒 Pagamento seguro · Pix ou cartão</div>
-    <div class="pay">✓ Garantia de ${CONFIG.garantiaDias} dias</div>
+    <div class="pay" style="display:flex;align-items:center;justify-content:center;gap:8px"><img src="img/selo-garantia.webp" alt="" style="width:44px">Garantia incondicional de ${CONFIG.garantiaDias} dias</div>
   </div>`;
   const quem = CONFIG.autor.nome ? `
   <div class="block"><h2>Quem criou</h2>
@@ -511,7 +519,7 @@ function showResult(){
   <div class="block"><h2>Quem já está fazendo</h2>${CONFIG.depoimentos.map(d=>`<div class="dep"><div style="display:flex;gap:12px;align-items:center">${d.foto?img(d.foto,'','ph" style="width:56px;height:56px;border-radius:50%;flex:none;aspect-ratio:1'):''}<div><b>${d.nome}${d.idade?`, ${d.idade} anos`:''}</b><div class="small">${d.cidade||''}</div></div></div><p style="margin:10px 0 0">"${d.texto}"</p></div>`).join('')}</div>`:'';
 
   $app.innerHTML=`
-  <div class="sticky"><span>Cupom aplicado: <b>-${CONFIG.descontoPct}%</b></span><a href="#preco1">Ver meu plano</a></div>
+  <div class="sticky"><span>Desconto aplicado: <b>-${CONFIG.descontoPct}%</b></span><a href="#preco1">Ver meu plano</a></div>
 
   <div class="block">
     <div class="cmp">
@@ -538,9 +546,9 @@ function showResult(){
     <ul class="check"><li>Rotina de 20 dias, com sessões de 8 a 12 minutos</li><li>Ilustrações passo a passo, em letra grande, para imprimir em A4 ou ver no celular</li>
     <li>3 trilhas: Mobilidade, Equilíbrio e Calma e Sono (a sua já marcada)</li><li>Nível 1 (sentado) e Nível 2 (com a cadeira de apoio)</li></ul>
     <h2 style="margin-top:16px">E de bônus:</h2>
-    <div class="bonus"><b>🎁 Bônus 1: Guia de Alimentação Equilibrada</b>Refeições simples do dia a dia, sem dieta radical e sem contar calorias.</div>
-    <div class="bonus"><b>🎁 Bônus 2: Cartão da Rotina para a Geladeira</b>Os movimentos do dia em uma página, para olhar e fazer.</div>
-    <div class="bonus"><b>🎁 Bônus 3: Diário dos 20 Dias</b>Marque cada dia concluído e veja sua evolução.</div>
+    <div class="bonus"><b>🎁 Bônus 1: Guia de Alimentação Equilibrada <span class="small">(valor R$ ${CONFIG.valores.bonus1})</span></b>Refeições simples do dia a dia, sem dieta radical e sem contar calorias.</div>
+    <div class="bonus"><b>🎁 Bônus 2: Cartão da Rotina para a Geladeira <span class="small">(valor R$ ${CONFIG.valores.bonus2})</span></b>Os movimentos do dia em uma página, para olhar e fazer.</div>
+    <div class="bonus"><b>🎁 Bônus 3: Diário dos 20 Dias <span class="small">(valor R$ ${CONFIG.valores.bonus3})</span></b>Marque cada dia concluído e veja sua evolução.</div>
   </div>
 
   <div class="block"><h2>Isso é para você se...</h2><ul class="check">
@@ -565,7 +573,7 @@ function showResult(){
 
   ${deps}
 
-  <div class="block guar"><div class="seal">${CONFIG.garantiaDias} DIAS<br>GARANTIA</div><div><b>Garantia incondicional de ${CONFIG.garantiaDias} dias</b><div class="small">Se não gostar por qualquer motivo, devolvemos 100% do valor. Sem perguntas.</div></div></div>
+  <div class="block guar"><img src="img/selo-garantia.webp" alt="Garantia incondicional de ${CONFIG.garantiaDias} dias" style="width:110px;height:auto;flex:none"><div><b>Garantia incondicional de ${CONFIG.garantiaDias} dias</b><div class="small">Se não gostar por qualquer motivo, devolvemos 100% do valor. Sem perguntas.</div></div></div>
 
   <div class="block"><h2>Perguntas frequentes</h2>
     <details><summary>Preciso ficar em pé?</summary><p>Não. O Nível 1 é todo sentado. O Nível 2 usa a cadeira como apoio, para quem já se sente firme.</p></details>
