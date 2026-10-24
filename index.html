@@ -181,10 +181,12 @@ const S = [
  {id:'idade', type:'cards', sec:'Meu perfil', q:()=>'Qual é a sua idade?',
   opts:[['40','40 a 49'],['50','50 a 59'],['60','60 a 69'],['70','70 ou mais']], img:v=>`img/idade-${A.genero}-${v}.webp`},
  {id:'prova', type:'info', title:()=>'Você está em boa companhia',
-  html:()=>`${img(`img/grupo-${A.genero}.webp`,'Foto: grupo de 3 pessoas da faixa de idade, sorrindo, com roupa de ginástica','ph hero')}
-  <div class="info">A Organização Mundial da Saúde recomenda que <b>adultos de todas as idades</b> se movimentem toda semana, e que quem tem mais idade inclua exercícios de <b>força e equilíbrio</b>.<br><br>
-  Começar com 10 a 15 minutos por dia, em casa, já é um passo nessa direção.</div>
-  <div class="src">Fonte: <a href="https://www.paho.org/pt/noticias/26-11-2020-oms-lanca-novas-diretrizes-sobre-atividade-fisica-e-comportamento-sedentario" target="_blank" rel="noopener">OMS/OPAS, diretrizes de atividade física (2020)</a></div>`},
+  html:()=>`${img(`img/grupo-${A.genero}.webp`,'Foto: grupo de 3 pessoas da faixa de idade, roupa de treino','ph hero')}
+  <div class="info" style="text-align:center;font-size:20px"><b>Junte-se aos milhões de ${G('brasileiras','brasileiros')} com mais de 40 anos que decidiram ter um corpo mais forte e uma vida mais saudável.</b></div>
+  <div class="info" style="margin-top:12px">
+   💪 <b>Treinar força virou tendência depois dos 40:</b> a musculação já está entre as atividades favoritas de quem passou dos 40, segundo a pesquisa MindMiners (2026).<br><br>
+   🌎 <b>A Organização Mundial da Saúde recomenda</b> exercícios de fortalecimento muscular <b>pelo menos 2 vezes por semana</b> para adultos, e ainda mais atenção à força e ao equilíbrio depois dos 65.</div>
+  <div class="src">Fontes: <a href="https://mundodomarketing.com.br/como-o-consumidor-40-esta-transformando-o-mercado-fitness" target="_blank" rel="noopener">MindMiners / Mundo do Marketing (2026)</a> · <a href="https://who.int/initiatives/behealthy/physical-activity" target="_blank" rel="noopener">OMS</a></div>`},
  {id:'experiencia', type:'single', sec:'Meu perfil', q:()=>'Você já praticou Tai Chi ou ginástica na cadeira?',
   opts:[['nunca','Nunca'],['parei','Já tentei e parei'],['vez','Pratico de vez em quando']]},
  {id:'genial', type:'info', title:()=>G('Você vai se sair muito bem!','Você vai se sair muito bem!'),
