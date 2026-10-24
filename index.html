@@ -162,6 +162,8 @@ function img(src,label,cls='ph'){
 }
 const has = (k,v)=> Array.isArray(A[k]) ? A[k].includes(v) : A[k]===v;
 const lbl = l => typeof l==='function' ? l() : l;
+/* MODO: 'forte' = 40-59 (ou 60+ ativo que quer força) -> linguagem de músculo/definição; 'suave' = mobilidade/independência */
+const modo = ()=> (A.levantar!=='nao' && A.idade!=='70' && (['40','50'].includes(A.idade) || ['firme','forca'].includes(A.objetivo))) ? 'forte' : 'suave';
 const dataBR = d => d.toLocaleDateString('pt-BR',{day:'numeric',month:'long'});
 
 /* boneco com ponto vermelho (tela de desconforto) */
@@ -187,7 +189,9 @@ const S = [
   opts:[['nunca','Nunca'],['parei','Já tentei e parei'],['vez','Pratico de vez em quando']]},
  {id:'genial', type:'info', title:()=>G('Você vai se sair muito bem!','Você vai se sair muito bem!'),
   html:()=>`${img(`img/promessa-${A.genero}.webp`,'Foto: pessoa usando a cadeira como apoio','ph hero')}
-  <div class="info">O Tai Chi na cadeira é uma forma de exercício <b>suave e eficaz para todos os níveis</b>, de quem nunca treinou a quem já se exercita.<br><br><b>Você só precisa de uma cadeira para começar em casa.</b></div>`},
+  <div class="info">${['40','50'].includes(A.idade)
+   ? 'O Tai Chi na cadeira junta <b>movimentos de força e controle</b> usando o peso do seu corpo e a cadeira como apoio. Dá para começar do zero e chegar a treinos de verdade.'
+   : 'O Tai Chi na cadeira é uma forma de exercício <b>suave e eficaz para todos os níveis</b>, de quem nunca treinou a quem já se exercita.'}<br><br><b>Você só precisa de uma cadeira para começar em casa.</b></div>`},
 
  {id:'objetivo', type:'single', sec:'Objetivo', q:()=>'Qual é o seu principal objetivo?',
   opts:[['firme','Corpo mais firme e definido'],['forca','Ganhar força'],['mobilidade','Menos rigidez, mais mobilidade'],
@@ -200,7 +204,9 @@ const S = [
   opts:[['disposicao','Disposição'],['postura','Postura'],['flex','Flexibilidade'],['respiracao','Respiração mais calma'],['autoestima','Autoestima'],['alimentacao','Cuidar melhor da alimentação']]},
  {id:'solucao', type:'info', title:()=>'Temos a solução certa para você!',
   html:()=>`${img(`img/solucao-${A.genero}.webp`,'Foto: respiração + movimento lento na cadeira','ph hero')}
-  <div class="info">Para ${G('mulheres','homens')} de ${faixa()}, o Tai Chi na cadeira junta <b>movimento controlado e respiração</b>. Você trabalha o corpo todo, sem impacto, e evolui quando ficar fácil.<br><br><b>10 a 15 minutos por dia para começar.</b></div>`},
+  <div class="info">${modo()==='forte'
+   ? `Para ${G('mulheres','homens')} de ${faixa()}, o plano combina Tai Chi com <b>exercícios de força usando a cadeira</b>: flexão apoiada para peito e braços, agachamento segurando no encosto para pernas e glúteos, tríceps no assento. Você <b>ganha músculo com o peso do próprio corpo</b>, sem impacto, e aumenta o desafio a cada semana.`
+   : `Para ${G('mulheres','homens')} de ${faixa()}, o Tai Chi na cadeira junta <b>movimento controlado e respiração</b>. Você trabalha o corpo todo, sem impacto, e evolui quando ficar fácil.`}<br><br><b>10 a 15 minutos por dia para começar.</b></div>`},
 
  {id:'corpoAtual', type:'cards', sec:'Seu corpo', q:()=>'Como você descreveria o seu corpo hoje?', light:true,
   opts:[['1','Magro'],['2','Médio'],['3','Cheinho'],['4','Acima do peso']], img:v=>`img/corpo-${A.genero}-${v}.webp`},
@@ -297,15 +303,19 @@ function calc(){
   if(A.sono!=='bem') p.C+=2;
   let perfil = Object.keys(p).sort((a,b)=>p[b]-p[a])[0];
   if(Object.keys(p).filter(k=>p[k]===p[perfil]).length>1){ perfil = A.objetivo==='equilibrio'?'B':A.objetivo==='calma'?'C':'A'; }
-  const nivel = (A.idade==='70'||A.levantar==='nao'||A.equilibrio==='receio') ? 1
+  let nivel = (A.idade==='70'||A.levantar==='nao'||A.equilibrio==='receio') ? 1
               : (A.levantar==='facil' || (A.levantar==='esforco' && A.freq!=='nunca')) ? 2 : 1;
+  if(nivel===2 && A.levantar==='facil' && A.freq!=='nunca' && A.folego!=='sem' && ['40','50'].includes(A.idade)) nivel=3;
+  if(modo()==='forte' && ['firme','forca'].includes(A.objetivo)) perfil='D';
   return {perfil,nivel};
 }
 const PERFIS = {
   A:{nome:'Mobilidade e Firmeza no Dia a Dia', foco:['Levantar da cadeira com firmeza','Pernas e tronco mais fortes','Soltar a rigidez do corpo']},
   B:{nome:'Equilíbrio e Segurança', foco:['Firmeza para andar e subir degraus','Tronco estável','Pés bem plantados no chão']},
-  C:{nome:'Calma, Descompressão e Sono', foco:['Respiração lenta','Soltar ombros e pescoço','Rotina leve antes de deitar']}
+  C:{nome:'Calma, Descompressão e Sono', foco:['Respiração lenta','Soltar ombros e pescoço','Rotina leve antes de deitar']},
+  D:{nome:'Força e Definição Muscular', foco:['Peito e braços com flexão apoiada na cadeira','Pernas e glúteos com agachamento segurando no encosto','Abdômen firme e postura forte']}
 };
+const NIVEL_TXT = {1:'Nível 1 · Sentado',2:'Nível 2 · Com a cadeira de apoio',3:'Nível 3 · Força com a cadeira'};
 const OBJ = {firme:'Corpo mais firme',forca:'Ganhar força',mobilidade:'Mais mobilidade',equilibrio:'Equilíbrio',calma:'Calma e sono',independencia:'Independência'};
 function niveis(){
   const s=(v,map)=>map[v]??1;
@@ -313,6 +323,12 @@ function niveis(){
   const mob  = (s(A.flex,{nao:0,esforco:1,facil:2}) + s(A.corpo,{travado:0,semforca:1,cansa:1,bem:2}))/4;
   const eq   = (s(A.equilibrio,{receio:0,'as-vezes':1,firme:2}) + s(A.folego,{sem:0,pouco:1,tranquilo:2}))/4;
   const calm = (s(A.energia,{cedo:0,almoco:1,boa:2}) + s(A.sono,{demoro:0,acordo:0,bem:2}))/4;
+  if(modo()==='forte'){
+    const forca = (s(A.levantar,{nao:0,esforco:1,facil:2}) + s(A.freq,{nunca:0,'1-2':1,'3+':2}))/4;
+    const defin = ({'1':.45,'2':.5,'3':.3,'4':.15})[A.corpoAtual]??.4;
+    const disp  = (s(A.energia,{cedo:0,almoco:1,boa:2}) + s(A.folego,{sem:0,pouco:1,tranquilo:2}))/4;
+    return [['Força muscular',forca],['Definição do corpo',defin],['Disposição',disp],['Mobilidade',mob]];
+  }
   return [['Firmeza das pernas',firm],['Mobilidade',mob],['Equilíbrio',eq],['Calma e sono',calm]];
 }
 const corNivel=v=> v<0.34?'#d9534f':v<0.75?'#e6a23c':'#2e9d6a';
@@ -382,7 +398,7 @@ function renderPerfil(){
    <div class="info">
    ${niveis().map(([n,v])=>`<div class="meter"><div class="row"><span>${n}</span><span style="color:${corNivel(v)}">${txtNivel(v)}</span></div>
      <div class="track"><i style="width:${Math.max(12,Math.round(v*100))}%;background:${corNivel(v)}"></i></div></div>`).join('')}
-   <div class="sumgrid" style="margin-top:12px"><div>Trilha indicada<b>${PERFIS[perfil].nome}</b></div><div>Ponto de partida<b>Nível ${nivel}</b></div></div>
+   <div class="sumgrid" style="margin-top:12px"><div>Trilha indicada<b>${PERFIS[perfil].nome}</b></div><div>Ponto de partida<b>${NIVEL_TXT[nivel]}</b></div></div>
    </div>
    <p class="small">Estimativa com base nas suas respostas. Não é avaliação médica.</p>
    <div class="info" style="background:var(--brand-2)">💪 <b>A boa notícia:</b> todos esses pontos podem ser trabalhados com uma rotina curta, feita em casa, no seu ritmo.</div>
@@ -408,7 +424,9 @@ function renderJornada(){
      <rect x="218" y="5" width="96" height="22" rx="8" fill="#2e9d6a"/><text x="266" y="20" font-size="12" text-anchor="middle" fill="#fff" font-weight="700">Rotina criada</text>
      <text x="20" y="180" font-size="12" fill="#66756f">Hoje</text><text x="305" y="180" font-size="12" text-anchor="end" fill="#66756f">${dataBR(fim)}</text>
    </svg>
-   <ul class="check" style="margin:6px 0 0;font-size:16px"><li><b>Semana 1:</b> corpo mais solto e respiração mais calma</li><li><b>Semana 2:</b> mais firmeza para sentar e levantar</li><li><b>Dia 20:</b> rotina criada, no seu ritmo</li></ul>
+   <ul class="check" style="margin:6px 0 0;font-size:16px">${modo()==='forte'
+     ? '<li><b>Semana 1:</b> corpo ativado e técnica aprendida</li><li><b>Semana 2:</b> mais força em braços, peito e pernas</li><li><b>Dia 20:</b> músculos mais firmes e hábito criado</li>'
+     : '<li><b>Semana 1:</b> corpo mais solto e respiração mais calma</li><li><b>Semana 2:</b> mais firmeza para sentar e levantar</li><li><b>Dia 20:</b> rotina criada, no seu ritmo</li>'}</ul>
    </div>
    <p class="small">Ilustração do plano de 20 dias. Cada pessoa evolui no seu tempo.</p>
    <button class="btn" id="go">Continuar</button>`;
@@ -498,19 +516,24 @@ function showResult(){
   document.querySelector('header.top').style.display='none';
   window.scrollTo(0,0);
   const {perfil,nivel}=calc(), P=PERFIS[perfil];
-  const nivelTxt = nivel===1?'Nível 1 · Sentado':'Nível 2 · Com a cadeira de apoio';
+  const nivelTxt = NIVEL_TXT[nivel];
   const tempoTxt = ({'5-10':'5 a 10 min','10-15':'10 a 15 min','20+':'15 a 20 min'})[A.tempo]||'10 a 15 min';
   const horaTxt = ({manha:'De manhã',tarde:'À tarde',noite:'À noite'})[A.horario]||'Quando preferir';
   let ck = CONFIG.checkoutUrl;
   if(ck && ck!=='#'){ try{ const u=new URL(ck); u.searchParams.set('name',A.nome||''); u.searchParams.set('email',A.email||''); ck=u.toString(); }catch(e){} }
-  const metas = [...new Set([OBJ[A.objetivo], ...(A.outros||[]).map(o=>({disposicao:'Mais disposição',postura:'Melhor postura',flex:'Mais flexibilidade',respiracao:'Respiração mais calma',autoestima:'Mais autoestima',alimentacao:'Alimentação mais equilibrada'})[o])].filter(Boolean))];
+  const AREA_FORTE = {bracos:'Bíceps e tríceps mais firmes e definidos',pernas:'Coxas, glúteos e panturrilhas mais fortes',tronco:'Abdômen e core mais firmes',costas:'Costas mais fortes e postura ereta',ombros:'Ombros e peito mais definidos'};
+  const areas = has('areas','todo') ? Object.keys(AREA_FORTE) : (A.areas||[]);
+  const metas = modo()==='forte'
+    ? [...new Set(['Ganho de massa muscular usando o peso do corpo', ...areas.map(a=>AREA_FORTE[a]).filter(Boolean),
+        'Mais músculo e menos gordura, junto com a alimentação equilibrada', 'Mais disposição e energia no dia a dia'])]
+    : [...new Set([OBJ[A.objetivo], ...(A.outros||[]).map(o=>({disposicao:'Mais disposição',postura:'Melhor postura',flex:'Mais flexibilidade',respiracao:'Respiração mais calma',autoestima:'Mais autoestima',alimentacao:'Alimentação mais equilibrada'})[o]), ...P.foco].filter(Boolean))];
   const nv = niveis();
   const priceBlock = (id)=>`
   <div class="block price" id="${id}">
     <h2>Comece seu plano hoje</h2>
     <div class="coupon">Seu desconto de ${CONFIG.descontoPct}% foi aplicado ✓</div>
     <table class="vs" style="margin:12px 0 4px;text-align:left">
-      <tr><td>Guia ${CONFIG.produto} (20 dias, 3 trilhas)</td><td style="text-align:right;white-space:nowrap">R$ ${CONFIG.valores.guia}</td></tr>
+      <tr><td>Guia ${CONFIG.produto} (20 dias, 4 trilhas, 3 níveis)</td><td style="text-align:right;white-space:nowrap">R$ ${CONFIG.valores.guia}</td></tr>
       <tr><td>Bônus 1: Guia de Alimentação Equilibrada</td><td style="text-align:right;white-space:nowrap">R$ ${CONFIG.valores.bonus1}</td></tr>
       <tr><td>Bônus 2: Cartão da Rotina para a Geladeira</td><td style="text-align:right;white-space:nowrap">R$ ${CONFIG.valores.bonus2}</td></tr>
       <tr><td>Bônus 3: Diário dos 20 Dias</td><td style="text-align:right;white-space:nowrap">R$ ${CONFIG.valores.bonus3}</td></tr>
@@ -550,7 +573,7 @@ function showResult(){
     <div>Melhor horário<b>${horaTxt}</b></div><div>Local<b>Em casa, com uma cadeira</b></div>
   </div></div>
 
-  <div class="block"><h2>O que vamos trabalhar juntos</h2><ul class="check">${metas.map(m=>`<li>${m}</li>`).join('')}${P.foco.map(f=>`<li>${f}</li>`).join('')}</ul></div>
+  <div class="block"><h2>O que vamos trabalhar juntos</h2><ul class="check">${metas.slice(0,8).map(m=>`<li>${m}</li>`).join('')}</ul>${modo()==='forte'?'<p class="small">Treinos progressivos com a cadeira: flexão apoiada, agachamento segurando no encosto, tríceps no assento, ponte de glúteo e mais.</p>':''}</div>
 
   ${priceBlock('preco1')}
 
@@ -558,7 +581,7 @@ function showResult(){
     ${CONFIG.videoUrl?`<div class="video"><iframe src="${CONFIG.videoUrl}" style="width:100%;height:100%;border:0" allow="autoplay; fullscreen" allowfullscreen></iframe></div>`:img(`img/mockup-kit-${A.genero}.webp`,'Mockup do kit: guia impresso + celular + bônus','ph hero')}
     <h2>O que você recebe</h2>
     <ul class="check"><li>Rotina de 20 dias, com sessões de 8 a 12 minutos</li><li>Ilustrações passo a passo, em letra grande, para imprimir em A4 ou ver no celular</li>
-    <li>3 trilhas: Mobilidade, Equilíbrio e Calma e Sono (a sua já marcada)</li><li>Nível 1 (sentado) e Nível 2 (com a cadeira de apoio)</li></ul>
+    <li>4 trilhas: Força e Definição, Mobilidade, Equilíbrio e Calma e Sono (a sua já marcada)</li><li>3 níveis: Sentado, Com a cadeira de apoio e Força com a cadeira, para você evoluir sem parar</li></ul>
     <h2 style="margin-top:16px">E de bônus:</h2>
     <div class="bonus"><b>🎁 Bônus 1: Guia de Alimentação Equilibrada <span class="small">(valor R$ ${CONFIG.valores.bonus1})</span></b>Refeições simples do dia a dia, sem dieta radical e sem contar calorias.</div>
     <div class="bonus"><b>🎁 Bônus 2: Cartão da Rotina para a Geladeira <span class="small">(valor R$ ${CONFIG.valores.bonus2})</span></b>Os movimentos do dia em uma página, para olhar e fazer.</div>
@@ -567,7 +590,9 @@ function showResult(){
 
   <div class="block"><h2>Isso é para você se...</h2><ul class="check">
     <li>Quer se movimentar mais, mas academia não combina com você</li><li>Já começou vídeos de exercício e parou porque eram rápidos ou difíceis</li>
-    <li>Sente o corpo duro ao levantar ou cansado no meio do dia</li><li>Prefere algo curto, em casa e no seu ritmo</li></ul></div>
+    ${modo()==='forte'
+      ? '<li>Quer um corpo mais firme e definido, com mais músculo e menos gordura</li><li>Quer treinar força em casa, sem pagar academia</li>'
+      : '<li>Sente o corpo duro ao levantar ou cansado no meio do dia</li>'}<li>Prefere algo curto, em casa e no seu ritmo</li></ul></div>
 
   <div class="block"><h2>Por que isso importa depois dos 40</h2>
     <p>A perda de músculo com a idade tem nome: <b>sarcopenia</b>. Ela começa ainda aos 30 anos, acelera depois dos 60 e deixa as pernas mais fracas, o levantar mais difícil e o equilíbrio menos firme.</p>
